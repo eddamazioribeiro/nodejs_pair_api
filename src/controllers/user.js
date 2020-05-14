@@ -1,6 +1,5 @@
 const User = require('../models/user');
-const expressJwt = require('express-jwt');
-const jwt = require('jsonwebtoken');
+const {generateToken} = require('./auth');
 require('dotenv').config();
 
 exports.signUp = (req, res) => {
@@ -37,9 +36,7 @@ exports.signIn = (req, res) => {
                 });
             } else {
                 const {_id, name, email} = user;
-                const token = jwt.sign({email},
-                    process.env.JWT_SECRET,
-                    {expiresIn: '1d'});
+                const token = generateToken(_id);
 
                 res.json({
                     user: {
